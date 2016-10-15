@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0DA4EED21DB1435500F65A9A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA4EED11DB1435500F65A9A /* main.swift */; };
+		0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA4EED81DB1439300F65A9A /* HueBridge.swift */; };
+		0DA4EEDC1DB1445400F65A9A /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		0DA4EECE1DB1435500F65A9A /* lazerbeamz */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lazerbeamz; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA4EED11DB1435500F65A9A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		0DA4EED81DB1439300F65A9A /* HueBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HueBridge.swift; sourceTree = "<group>"; };
+		0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DA4EEDC1DB1445400F65A9A /* libcurl.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +48,7 @@
 			children = (
 				0DA4EED01DB1435500F65A9A /* lazerbeamz */,
 				0DA4EECF1DB1435500F65A9A /* Products */,
+				0DA4EEDA1DB1445400F65A9A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,8 +64,17 @@
 			isa = PBXGroup;
 			children = (
 				0DA4EED11DB1435500F65A9A /* main.swift */,
+				0DA4EED81DB1439300F65A9A /* HueBridge.swift */,
 			);
 			path = lazerbeamz;
+			sourceTree = "<group>";
+		};
+		0DA4EEDA1DB1445400F65A9A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -122,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DA4EED21DB1435500F65A9A /* main.swift in Sources */,
+				0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
