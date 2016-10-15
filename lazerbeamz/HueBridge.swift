@@ -37,7 +37,7 @@ struct Lazerbeamz {
         
         var cfg: Config = Config()
         
-        var lights: [Light] {
+        func enumerateConnectedLights() -> [Light] {
             return Lazerbeamz.enumerateConnectedLights(bridgeAddress: self.cfg.ipOrHostname,
                                                        apiKey: self.cfg.apiKey)
         }

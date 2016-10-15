@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5866E61DB2BAAC006F553B /* SLColorArt.m */; };
+		0D5866E91DB2BACC006F553B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5866E81DB2BACC006F553B /* libsqlite3.tbd */; };
 		0DA4EED21DB1435500F65A9A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA4EED11DB1435500F65A9A /* main.swift */; };
 		0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA4EED81DB1439300F65A9A /* HueBridge.swift */; };
 		0DA4EEDC1DB1445400F65A9A /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */; };
@@ -25,6 +27,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D5866E41DB2BAAB006F553B /* lazerbeamz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lazerbeamz-Bridging-Header.h"; sourceTree = "<group>"; };
+		0D5866E51DB2BAAC006F553B /* SLColorArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLColorArt.h; sourceTree = "<group>"; };
+		0D5866E61DB2BAAC006F553B /* SLColorArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLColorArt.m; sourceTree = "<group>"; };
+		0D5866E81DB2BACC006F553B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		0DA4EECE1DB1435500F65A9A /* lazerbeamz */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lazerbeamz; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA4EED11DB1435500F65A9A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		0DA4EED81DB1439300F65A9A /* HueBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HueBridge.swift; sourceTree = "<group>"; };
@@ -36,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D5866E91DB2BACC006F553B /* libsqlite3.tbd in Frameworks */,
 				0DA4EEDC1DB1445400F65A9A /* libcurl.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,8 +70,11 @@
 		0DA4EED01DB1435500F65A9A /* lazerbeamz */ = {
 			isa = PBXGroup;
 			children = (
+				0D5866E51DB2BAAC006F553B /* SLColorArt.h */,
+				0D5866E61DB2BAAC006F553B /* SLColorArt.m */,
 				0DA4EED11DB1435500F65A9A /* main.swift */,
 				0DA4EED81DB1439300F65A9A /* HueBridge.swift */,
+				0D5866E41DB2BAAB006F553B /* lazerbeamz-Bridging-Header.h */,
 			);
 			path = lazerbeamz;
 			sourceTree = "<group>";
@@ -72,6 +82,7 @@
 		0DA4EEDA1DB1445400F65A9A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D5866E81DB2BACC006F553B /* libsqlite3.tbd */,
 				0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */,
 			);
 			name = Frameworks;
@@ -110,6 +121,7 @@
 					0DA4EECD1DB1435500F65A9A = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = V4B772B3P8;
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -138,6 +150,7 @@
 			files = (
 				0DA4EED21DB1435500F65A9A /* main.swift in Sources */,
 				0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */,
+				0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,8 +248,13 @@
 		0DA4EED61DB1435500F65A9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = V4B772B3P8;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "lazerbeamz/lazerbeamz-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -244,8 +262,12 @@
 		0DA4EED71DB1435500F65A9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = V4B772B3P8;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "lazerbeamz/lazerbeamz-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -269,6 +291,7 @@
 				0DA4EED71DB1435500F65A9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
