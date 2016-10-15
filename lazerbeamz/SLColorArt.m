@@ -61,6 +61,8 @@
     return [[SLColorArt alloc] initWithImage: [self currentDesktopWallpaper] scaledSize: NSMakeSize(512, 512)];
 }
 
+//This is needed when the user has random desktop wallpapers activated. In that case NSWorkspace will only return
+//the base image folder and not the whole filename. So we will have to get the wallpaper filename ourselves.
 + (NSString *) currentDesktopWallpaperPath {
     NSMutableArray *sqliteData = [[NSMutableArray alloc] init];
     
@@ -82,19 +84,12 @@
         }
     }
     NSUInteger cnt = [sqliteData count] - 1;
-//    NSLog(@"Desktop Picture: %@", sqliteData[cnt]);
-//    //    NSLog(@"%@",sqliteData);
-    
     NSString *fn = sqliteData[cnt];
-    
     NSString *base = [[[NSWorkspace sharedWorkspace] desktopImageURLForScreen: [NSScreen mainScreen]] path];
     
     sqlite3_close(database);
     
     return [base stringByAppendingPathComponent: fn];
-    
-//    return [[NSImage alloc] initWithContentsOfFile: [base stringByAppendingPathComponent: fn]];
-
 }
 
 +(NSImage *) currentDesktopWallpaper {

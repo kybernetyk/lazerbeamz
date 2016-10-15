@@ -15,23 +15,29 @@ var bridge = Lazerbeamz.Bridge()
 print(bridge.enumerateConnectedLights())
 
 bridge.turnOn()
-//bridge.turnOn(light: 1)
+bridge.turnOff(light: 3) //annoying light is annoying
 bridge.setSaturation(saturation: 255)
 bridge.setBrightness(brightness: 0)
 
 func updateColors() {
     let cols = SLColorArt.withDesktopWallpaper()!
     
+    //saturation and brightness are tricky to get right for a dark room
+    //some colors just don't translate well to lighting and we could 
+    //be sitting in low saturated (= white) colors all time
+    //the same with brightness. let's cap it at 100.
     func fobbleLight(light: Int, color: NSColor) {
         let h = Int(color.hueComponent * 0xffff) + 0x1000
         let b = Int(color.brightnessComponent * 100)
-//        let s = Int(color.saturationComponent * 0xff)
+        let s = 150 + Int(color.saturationComponent * 100)
         
         bridge.setHue(light: light, hue: h)
         bridge.setBrightness(light: light, brightness: b)
-        bridge.setSaturation(light: light, saturation: 0xff)
+        bridge.setSaturation(light: light, saturation: s)
     }
-    
+
+    //these lighting layout is hardcoded for my office.
+    //change according to yours
     if let col = cols.primaryColor {
         fobbleLight(light: 1, color: col)
     }
@@ -40,6 +46,7 @@ func updateColors() {
         fobbleLight(light: 2, color: col)
     }
     
+    //that lamp is annoying no matter what color it has :/
     //if let col = cols.detailColor {
     //    fobbleLight(light: 3, color: col)
     //}
@@ -65,6 +72,7 @@ while true {
     sleep(1)
 }
 
+//an annoying randomized loop
 //while true {
 //    bridge.setBrightness(brightness: 255)
 //    sleep(1)
