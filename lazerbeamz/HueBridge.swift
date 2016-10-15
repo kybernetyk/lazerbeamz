@@ -48,7 +48,7 @@ struct Lazerbeamz {
                              apiKey: self.cfg.apiKey,
                              lightID: light,
                              on: true,
-                             transitionTime: cfg.transitionTime)
+                             transitionTime: 0)
         }
         
         func turnOff(light: Int) {
@@ -56,7 +56,7 @@ struct Lazerbeamz {
                              apiKey: self.cfg.apiKey,
                              lightID: light,
                              on: false,
-                             transitionTime: cfg.transitionTime)
+                             transitionTime: 0)
         }
         
         func setBrightness(light: Int, brightness: Int) {

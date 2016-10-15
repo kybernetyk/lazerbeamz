@@ -15,9 +15,9 @@ var bridge = Lazerbeamz.Bridge()
 print(bridge.enumerateConnectedLights())
 
 bridge.turnOn()
-bridge.turnOff(light: 3) //annoying light is annoying
 bridge.setSaturation(saturation: 255)
 bridge.setBrightness(brightness: 0)
+bridge.turnOff(light: 3) //annoying light is annoying
 
 func updateColors() {
     let cols = SLColorArt.withDesktopWallpaper()!
@@ -27,9 +27,11 @@ func updateColors() {
     //be sitting in low saturated (= white) colors all time
     //the same with brightness. let's cap it at 100.
     func fobbleLight(light: Int, color: NSColor) {
-        let h = Int(color.hueComponent * 0xffff) + 0x1000
-        let b = Int(color.brightnessComponent * 100)
-        let s = 150 + Int(color.saturationComponent * 100)
+        let h = Int(color.hueComponent * 0xffff) + 3655
+        let b = Int(color.brightnessComponent * 127)
+        let s = 100 + Int(color.saturationComponent * 150)
+        
+        print("light \(light) => h: \(h), s: \(s), b: \(b)")
         
         bridge.setHue(light: light, hue: h)
         bridge.setBrightness(light: light, brightness: b)
@@ -53,10 +55,20 @@ func updateColors() {
     
     if let col = cols.detailColor {
         fobbleLight(light: 4, color: col)
+    } else {
+        print("could not get detail color. attemping primary color.")
+        if let col = cols.primaryColor {
+            fobbleLight(light: 4, color: col)
+        }
     }
     
     if let col = cols.backgroundColor {
         fobbleLight(light: 5, color: col)
+    } else {
+        print("could not get background color. attemping secondary color.")
+        if let col = cols.primaryColor {
+            fobbleLight(light: 5, color: col)
+        }
     }
 }
 
