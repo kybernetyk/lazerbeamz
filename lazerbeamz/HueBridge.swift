@@ -8,62 +8,28 @@
 
 import Foundation
 
+//MARK: - High Level Hue Abstraction
 struct Lazerbeamz {
     struct Light {
         var id: Int = -1
         var name: String = "Unknown"
         var model: String  = "Unknown"
         var manufacturer: String  = "Unknown"
-
-        fileprivate var bridge: Bridge = Bridge()
         
-//        fileprivate struct State {
-//            var bri: Int = 0
-//            var hue: Int = 0
-//            var sat: Int = 0
-//            var on: Bool = false
-//        }
-        
-        func updateState() {
-//            self.state = Lazerbeamz.stateForLight(bridge: self.bridge, lightID: self.id)
+        struct State {
+            var bri: Int = 0
+            var hue: Int = 0
+            var sat: Int = 0
+            var on: Bool = false
         }
         
-        var brightness: Int {
-            set {
-                Lazerbeamz.setBrightness(bridge: self.bridge, lightID: self.id, brightness: newValue)
-            }
-            get {
-                updateState()
-                return -1
-            }
-        }
-        
-        var hue: Int {
-            set {
-                Lazerbeamz.setHue(bridge: self.bridge, lightID: self.id, hue: newValue)
-            }
-            get {
-                updateState()
-                return -1
-            }
-        }
-        
-        var saturation: Int {
-            set {
-                Lazerbeamz.setSaturation(bridge: self.bridge, lightID: self.id, saturation: newValue)
-            }
-            get {
-                updateState()
-                return -1
-            }
-        }
-        
+        var state: State = State()
     }
     
     struct Bridge {
         struct Config {
-            var ip: String = "10.0.0.4"
-            var key: String = "2c94da63e6702cf1c368f5b30235a47"
+            var ipOrHostname: String = "10.0.0.4"
+            var apiKey: String = "2c94da63e6702cf1c368f5b30235a47"
             var transitionTime: Int = 15
             var blockingNetworkCalls: Bool = true
             var verbose: Bool = false
@@ -71,128 +37,183 @@ struct Lazerbeamz {
         
         var cfg: Config = Config()
         
-        fileprivate var baseURL: String {
-            get {
-                return "http://\(self.cfg.ip)/api/\(self.cfg.key)"
-            }
+        var lights: [Light] {
+            return Lazerbeamz.enumerateConnectedLights(bridgeAddress: self.cfg.ipOrHostname,
+                                                       apiKey: self.cfg.apiKey)
         }
         
-        var lights: [Int : Light] {
-            set {
-                
-            }
-            get {
-                let arr = Lazerbeamz.enumerateConnectedLights(bridge: self)
-                var ret: [Int : Light] = [:]
-                for l in arr {
-                    ret[l.id] = l
-                }
-                return ret
-            }
+        /* following operations will apply to specified light only */
+        func turnOn(light: Int) {
+            Lazerbeamz.setOn(bridgeAddress: self.cfg.ipOrHostname,
+                             apiKey: self.cfg.apiKey,
+                             lightID: light,
+                             on: true,
+                             transitionTime: cfg.transitionTime)
+        }
+        
+        func turnOff(light: Int) {
+            Lazerbeamz.setOn(bridgeAddress: self.cfg.ipOrHostname,
+                             apiKey: self.cfg.apiKey,
+                             lightID: light,
+                             on: false,
+                             transitionTime: cfg.transitionTime)
+        }
+        
+        func setBrightness(light: Int, brightness: Int) {
+            Lazerbeamz.setBrightness(bridgeAddress: self.cfg.ipOrHostname,
+                                     apiKey: self.cfg.apiKey,
+                                     lightID: light,
+                                     brightness: brightness,
+                                     transitionTime: cfg.transitionTime)
+        }
+        
+        func setHue(light: Int, hue: Int) {
+            Lazerbeamz.setHue(bridgeAddress: self.cfg.ipOrHostname,
+                              apiKey: self.cfg.apiKey,
+                              lightID: light,
+                              hue: hue,
+                              transitionTime: cfg.transitionTime)
+        }
+        
+        func setSaturation(light: Int, saturation: Int) {
+            Lazerbeamz.setSaturation(bridgeAddress: self.cfg.ipOrHostname,
+                                     apiKey: self.cfg.apiKey,
+                                     lightID: light,
+                                     saturation: saturation,
+                                     transitionTime: cfg.transitionTime)
+        }
+        
+        /* following operations will apply to all connected lights */
+        func turnOn() {
+            self.turnOn(light: 0)
+        }
+        
+        func turnOff() {
+            self.turnOff(light: 0)
         }
         
         func setBrightness(brightness: Int) {
-            Lazerbeamz.setBrightness(bridge: self, lightID: 0, brightness: brightness)
+            self.setBrightness(light: 0,
+                               brightness: brightness)
         }
         
         func setHue(hue: Int) {
-            Lazerbeamz.setHue(bridge: self, lightID: 0, hue: hue)
+            self.setHue(light: 0,
+                        hue: hue)
         }
         
         func setSaturation(saturation: Int) {
-            Lazerbeamz.setSaturation(bridge: self, lightID: 0, saturation: saturation)
+            self.setSaturation(light: 0,
+                               saturation: saturation)
         }
+        
     }
 }
 
+//MARK: - Low Level Hue Access
+extension Lazerbeamz {
+    fileprivate static func baseUrlForBridge(bridgeAddress: String, apiKey: String) -> String {
+        return "http://\(bridgeAddress)/api/\(apiKey)"
+    }
+    
+    private static func sendToBridge(bridgeAddress: String, apiKey: String, lightID: Int, payload: [String : Any]) {
+        let baseURL = baseUrlForBridge(bridgeAddress: bridgeAddress, apiKey: apiKey)
+        let endpoint = lightID == 0 ? "/groups/\(lightID)/action" : "/lights/\(lightID)/state"
+        let url = baseURL + endpoint
+        put(url: url, payload: payload)
+    }
+    
+    fileprivate static func setHue(bridgeAddress: String, apiKey: String, lightID: Int, hue: Int, transitionTime: Int) {
+        let val = min(max(0, hue), 0xffff)
+        
+        sendToBridge(bridgeAddress: bridgeAddress,
+                     apiKey: apiKey,
+                     lightID: lightID,
+                     payload: ["hue" : val,
+                               "transitiontime" : transitionTime])
+    }
+    
+    fileprivate static func setBrightness(bridgeAddress: String, apiKey: String, lightID: Int, brightness: Int, transitionTime: Int) {
+        let val = min(max(0, brightness), 255)
+        sendToBridge(bridgeAddress: bridgeAddress,
+                     apiKey: apiKey,
+                     lightID: lightID,
+                     payload: ["bri" : val,
+                               "transitiontime" : transitionTime])
+    }
+    
+    fileprivate static func setSaturation(bridgeAddress: String, apiKey: String, lightID: Int, saturation: Int, transitionTime: Int) {
+        let val = min(max(0, saturation), 255)
+        sendToBridge(bridgeAddress: bridgeAddress,
+                     apiKey: apiKey,
+                     lightID: lightID,
+                     payload: ["sat" : val,
+                               "transitiontime" : transitionTime])
+    }
+    
+    fileprivate static func setOn(bridgeAddress: String, apiKey: String, lightID: Int, on: Bool, transitionTime: Int) {
+        sendToBridge(bridgeAddress: bridgeAddress,
+                     apiKey: apiKey,
+                     lightID: lightID,
+                     payload: ["on" : on,
+                               "transitiontime" : transitionTime])
+    }
+}
 
 extension Lazerbeamz {
-    fileprivate static func enumerateConnectedLights(bridge: Bridge) -> [Light] {
-        let url = bridge.baseURL + "/lights"
+    fileprivate static func enumerateConnectedLights(bridgeAddress: String, apiKey: String) -> [Light] {
+        let baseURL = baseUrlForBridge(bridgeAddress: bridgeAddress, apiKey: apiKey)
+        let url = baseURL + "/lights"
         var ret: [Light] = []
+        
+        //create our special "all lights" light
+        //this is maily so that a) the user knows that sending
+        //messages to light 0 will affect all connected lights
+        //and be to fit into Hue's 1-based indexing scheme for
+        //light ids
+        do {
+            var light = Light()
+            light.id = 0
+            light.name = "All Lights Group."
+            light.model = "generilight"
+            light.manufacturer = "ACME"
+            ret.append(light)
+        }
         
         do {
             let dict = try get(url: url)
-            var curID: Int = 1
             for (key, l) in dict {
                 var light = Light()
-                light.bridge = bridge
                 light.id = Int(key)!
                 light.name = l["name"] as! String
                 light.model = l["modelid"] as! String
                 light.manufacturer = l["manufacturername"] as! String
                 
-//                let state = l["state"] as! Dictionary<String, AnyObject>
-//                
-//                light.state.bri = state["bri"] as! Int
-//                light.state.hue = state["hue"] as! Int
-//                light.state.sat = state["sat"] as! Int
-//                light.state.on = state["on"] as! Bool
-                ret.append(light)
+                let state = l["state"] as! Dictionary<String, AnyObject>
                 
-                curID += 1
+                light.state.bri = state["bri"] as! Int
+                light.state.hue = state["hue"] as! Int
+                light.state.sat = state["sat"] as! Int
+                light.state.on = state["on"] as! Bool
+                ret.append(light)
             }
             
-            return ret
+            return ret.sorted(by: {$0.id < $1.id})
         } catch {
             print("Net Error: \(error)")
-            return []
+            return ret
         }
     }
 }
 
-extension Lazerbeamz {
-    private static func setParameterToValue(bridge: Bridge, lightID: Int, parameterName: String, parameterValue: Int) {
-        let payload = [parameterName : parameterValue,
-                       "transitiontime" : bridge.cfg.transitionTime]
-        let url = bridge.baseURL + actionPathForLight(lightID: lightID)
-        put(url: url, payload: payload)
-    }
-    
-    fileprivate static func setHue(bridge: Bridge, lightID: Int, hue: Int) {
-        let val = min(max(0, hue), 0xffff)
-        setParameterToValue(bridge: bridge,
-                            lightID: lightID,
-                            parameterName: "hue",
-                            parameterValue: val)
-    }
-    
-    fileprivate static func setBrightness(bridge: Bridge, lightID: Int, brightness: Int) {
-        let val = min(max(0, brightness), 255)
-        setParameterToValue(bridge: bridge,
-                            lightID: lightID,
-                            parameterName: "bri",
-                            parameterValue: val)
-    }
-    
-    fileprivate static func setSaturation(bridge: Bridge, lightID: Int, saturation: Int) {
-        let val = min(max(0, saturation), 255)
-        setParameterToValue(bridge: bridge,
-                            lightID: lightID,
-                            parameterName: "sat",
-                            parameterValue: val)
-    }
-    
-    
-}
-
-
-////MARK: - Networking
+//MARK: - HTTP Networking
 extension Lazerbeamz {
     enum NetError : Error {
         case UrlFormatError
         case NoAnswer
     }
     
-    fileprivate static func actionPathForLight(lightID: Int) -> String {
-        if lightID == 0 {
-            return "/groups/\(lightID)/action"
-        } else {
-            return "/lights/\(lightID)/state"
-        }
-    }
-    
-    fileprivate static func put(url: String, payload: [String:Int]) {
+    fileprivate static func put(url: String, payload: [String:Any]) {
         guard let pls = try? JSONSerialization.data(withJSONObject: payload, options: []) else {
             print("json fuckup bro")
             return
@@ -238,13 +259,11 @@ extension Lazerbeamz {
         task.resume()
         sem.wait()
         
-        
-        
         if let data = responseData {
             if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, AnyObject> {
                 return dict
             }
-
+            
             throw NetError.NoAnswer
         } else {
             throw NetError.NoAnswer

@@ -14,9 +14,13 @@ var bridge = Lazerbeamz.Bridge()
 var lights = bridge.lights
 print(lights)
 
-bridge.lights[5]!.saturation = 255
+//bridge.lights[5]!.saturation = 255
+bridge.turnOn()
 
-//////
+//bridge.setBrightness(light: 5, brightness: 255)
+//
+//
+////////
 while true {
     bridge.setBrightness(brightness: 255)
     sleep(1)
