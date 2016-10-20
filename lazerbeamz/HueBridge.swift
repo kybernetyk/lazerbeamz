@@ -28,7 +28,7 @@ struct Lazerbeamz {
     
     struct Bridge {
         struct Config {
-            var ipOrHostname: String = "10.0.0.4"
+            var ipOrHostname: String = "192.168.0.52"
             var apiKey: String = "2c94da63e6702cf1c368f5b30235a47"
             var transitionTime: Int = 15
             var blockingNetworkCalls: Bool = true

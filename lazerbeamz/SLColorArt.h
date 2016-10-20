@@ -25,12 +25,8 @@
 @property(retain, readonly) NSColor *detailColor;
 @property(nonatomic, copy) NSImage *scaledImage;
 
-+ (SLColorArt*)colorArtWithImage:(NSImage*)image scaledSize:(NSSize)size;
-+ (SLColorArt*)colorArtWithDesktopWallpaper;
-
++ (SLColorArt*) colorArtForImageAtPath: (NSString *) imagePath;
 + (NSString *) currentDesktopWallpaperPath;
-
-- (id)initWithImage:(NSImage*)image scaledSize:(NSSize)size;
 
 
 @end

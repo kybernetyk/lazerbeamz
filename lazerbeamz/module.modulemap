@@ -1,0 +1,13 @@
+//
+//  module.modulemap
+//  lazerbeamz
+//
+//  Created by kyb on 20/10/2016.
+//  Copyright © 2016 Suborbital Softowrks Ltd. All rights reserved.
+//
+
+module sqlite3 [system] {
+    header "sqlmod.h"
+    link "sqlite3"
+    export *
+}
