@@ -25,27 +25,9 @@ class Colorizer {
     
     func colorForCurrentWallpaper() throws -> ColorSet {
         let path = try self.currentWallpaperPath()
-        //1. try to retrieve from db
-//        do {
-//            if let cols = try self.database.read(filename: path) {
-//                return cols
-//            }
-//        } catch {
-//            print(error)
-//        }
-//        
-        /*
-            note: we can't just forward try here because even if the db fails we want to return a calculated ColorSet
-        */
         
         //2. if not found caluclate
         let cols = try calculateColorSetForFile(file: path)
-//        do {
-//            try self.database.insert(filename: path, colorset: cols)
-//        } catch {
-//            print(error)
-//        }
-//        
         return cols
     }
     
@@ -56,11 +38,16 @@ class Colorizer {
         return fn
     }
     
-    init() {
-//        try? self.database.open(filename: "colors.sqlite")
+    func colorForMainScreen() throws -> ColorSet {
+        let cols = try self.calculateColorSetForScreen()
+        return cols
     }
     
-//    fileprivate var database = ColorDB()
+    func colorsForMainScreen() throws -> [ColorSet] {
+        let cols = try self.calculateColorSetsForScreen()
+        return cols
+    }
+
 }
 
 fileprivate extension Colorizer {
@@ -102,4 +89,96 @@ fileprivate extension Colorizer {
         
         return colset;
       }
+    
+    func calculateColorSetForScreen() throws -> ColorSet {
+//        guard let cols = SLColorArt.init(forImageAtPath: file) else {
+//            throw ColorizerError.FileNotFound(path: file)
+//        }
+        
+        guard let cols = SLColorArt.forMainScreen() else {
+            throw ColorizerError.NoWallpaperFound
+        }
+        
+        var colset: ColorSet = ColorSet()
+        
+        if let c = cols.primaryColor {
+            colset.primary = Color(hue: Float(c.hueComponent),
+                                   saturation: Float(c.saturationComponent),
+                                   brightness: Float(c.brightnessComponent))
+        }
+        
+        if let c = cols.secondaryColor {
+            colset.secondary = Color(hue: Float(c.hueComponent),
+                                     saturation: Float(c.saturationComponent),
+                                     brightness: Float(c.brightnessComponent))
+        }
+        
+        if let c = cols.detailColor {
+            colset.detail = Color(hue: Float(c.hueComponent),
+                                  saturation: Float(c.saturationComponent),
+                                  brightness: Float(c.brightnessComponent))
+        } else {
+            colset.detail = colset.primary
+        }
+        
+        if let c = cols.backgroundColor {
+            colset.background = Color(hue: Float(c.hueComponent),
+                                      saturation: Float(c.saturationComponent),
+                                      brightness: Float(c.brightnessComponent))
+        } else {
+            colset.background = colset.primary
+        }
+        
+        
+        return colset;
+    }
+
+    func calculateColorSetsForScreen() throws -> [ColorSet] {
+        //        guard let cols = SLColorArt.init(forImageAtPath: file) else {
+        //            throw ColorizerError.FileNotFound(path: file)
+        //        }
+        
+        guard let cols = SLColorArt.colorArtsForMainScreen() else {
+            throw ColorizerError.NoWallpaperFound
+        }
+        
+        var ret: [ColorSet] = []
+        
+        for originset in cols {
+            var colset: ColorSet = ColorSet()
+            
+            if let c = originset.primaryColor {
+                colset.primary = Color(hue: Float(c.hueComponent),
+                                       saturation: Float(c.saturationComponent),
+                                       brightness: Float(c.brightnessComponent))
+            }
+            
+            if let c = originset.secondaryColor {
+                colset.secondary = Color(hue: Float(c.hueComponent),
+                                         saturation: Float(c.saturationComponent),
+                                         brightness: Float(c.brightnessComponent))
+            }
+            
+            if let c = originset.detailColor {
+                colset.detail = Color(hue: Float(c.hueComponent),
+                                      saturation: Float(c.saturationComponent),
+                                      brightness: Float(c.brightnessComponent))
+            } else {
+                colset.detail = colset.primary
+            }
+            
+            if let c = originset.backgroundColor {
+                colset.background = Color(hue: Float(c.hueComponent),
+                                          saturation: Float(c.saturationComponent),
+                                          brightness: Float(c.brightnessComponent))
+            } else {
+                colset.background = colset.primary
+            }
+            
+            ret.append(colset)
+        }
+        
+        return ret;
+    }
+
 }

@@ -65,16 +65,17 @@
     NSSize sze = [NSScreen mainScreen].frame.size;
     sze.width = sze.width / 4;
     sze.height = sze.height / 4;
-//    
-//    sze.width = 256;
-//    sze.height = 256;
-
+    //
+    //    sze.width = 256;
+    //    sze.height = 256;
+    
     CGImageRef img2 = CGImageCreateCopyWithColorSpace([img CGImageForProposedRect: nil
                                                                           context: nil
                                                                             hints:nil],
                                                       CGColorSpaceCreateDeviceRGB());
     NSImage *resultingImage = [[NSImage alloc] initWithCGImage: img2 size: sze];
-
+    
+    CGImageRelease(img2);
     
     
     
@@ -89,6 +90,7 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     if ([paths count] == 0) {
+        NSLog(@"failed to retrieve paths...");
         return nil;
     }
     
@@ -97,18 +99,27 @@
     
     sqlite3 *database;
     if (sqlite3_open([dbPath UTF8String], &database) == SQLITE_OK) {
-        
         const char *sql = "SELECT * FROM data";
         sqlite3_stmt *sel;
         if(sqlite3_prepare_v2(database, sql, -1, &sel, NULL) == SQLITE_OK) {
-            
             while(sqlite3_step(sel) == SQLITE_ROW) {
                 NSString *data = [NSString stringWithUTF8String:(char *)sqlite3_column_text(sel, 0)];
                 [sqliteData addObject:data];
             }
+            sqlite3_finalize(sel);
+        } else {
+            NSLog(@"prepare failed ... %s", sqlite3_errmsg(database));
+            sqlite3_close(database);
+            return nil;
         }
+        sqlite3_close(database);
+    } else {
+        NSLog(@"opening db failed ... %s", sqlite3_errmsg(database));
+        sqlite3_close(database);
+        return nil;
     }
     if ([sqliteData count] == 0) {
+        NSLog(@"sqliteData.count == 0");
         sqlite3_close(database);
         return nil;
     }
@@ -117,10 +128,121 @@
     NSString *base = [[[NSWorkspace sharedWorkspace] desktopImageURLForScreen: [NSScreen mainScreen]] path];
     
     
+    
+    
     return [base stringByAppendingPathComponent: fn];
 }
 
++ (NSImage *)mainScreenShot {
+    NSRect screenRect = [[NSScreen mainScreen] frame];
+    CGImageRef cgImage = CGWindowListCreateImage(screenRect, kCGWindowListOptionOnScreenOnly, kCGNullWindowID, kCGWindowImageDefault);
+    
+    NSSize sze = NSMakeSize(screenRect.size.width/8, screenRect.size.height/8);
+    
+    //    NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
+    //    CGImageRelease(cgImage);
+    //    NSImage *image = [[NSImage alloc] init];
+    //    [image addRepresentation:rep];
+    NSImage *img = [[NSImage alloc] initWithCGImage: cgImage size: sze];
+    CGImageRelease(cgImage);
+    return img;
+    //    return image;
+}
 
++ (SLColorArt*) colorArtForMainScreen {
+    NSImage *img = [SLColorArt mainScreenShot];
+    if (!img) {
+        return nil;
+    }
+    
+    //    NSSize sze = [NSScreen mainScreen].frame.size;
+    //    sze.width = sze.width / 4;
+    //    sze.height = sze.height / 4;
+    return [[SLColorArt alloc] initWithImageUnscale: img
+                                         scaledSize: [img size]];
+}
+
++ (NSImage *)imageWithRect:(NSRect)rect ofImage:(NSImage *)original;
+{
+    NSPoint zero = { 0.0, 0.0 };
+    NSImage *result = [[NSImage alloc] initWithSize: rect.size];
+    
+    [result lockFocus];
+    [original compositeToPoint:zero fromRect:rect
+                     operation:NSCompositeCopy];
+    [result unlockFocus];
+    return result;
+}
+
++ (NSArray<SLColorArt*>*) colorArtsForMainScreen {
+    NSImage *img = [SLColorArt mainScreenShot];
+    if (!img) {
+        return nil;
+    }
+    
+    NSSize sze = [img size];
+
+    NSMutableArray *ma = @[].mutableCopy;
+
+    {
+        NSSize s = NSMakeSize(sze.width/3.0, sze.height);
+        NSRect r = NSMakeRect(0, 0, s.width, s.height);
+        
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        SLColorArt *coli = [[SLColorArt alloc] initWithImageUnscale: sub
+                                                         scaledSize: [sub size]];
+        [ma addObject: coli];
+    }
+
+    {
+        NSSize s = NSMakeSize(sze.width/3.0, sze.height);
+        NSRect r = NSMakeRect(s.width, 0, s.width, s.height);
+        
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        SLColorArt *coli = [[SLColorArt alloc] initWithImageUnscale: sub
+                                                         scaledSize: [sub size]];
+        [ma addObject: coli];
+    }
+
+    {
+        NSSize s = NSMakeSize(sze.width/3.0, sze.height);
+        NSRect r = NSMakeRect(s.width*2, 0, s.width, s.height);
+        
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        SLColorArt *coli = [[SLColorArt alloc] initWithImageUnscale: sub
+                                                         scaledSize: [sub size]];
+        [ma addObject: coli];
+    }
+
+    {
+        NSSize s = NSMakeSize(sze.width, sze.height/3);
+        NSRect r = NSMakeRect(0, 0, s.width, s.height);
+        
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        SLColorArt *coli = [[SLColorArt alloc] initWithImageUnscale: sub
+                                                         scaledSize: [sub size]];
+        [ma addObject: coli];
+    }
+
+    
+    return ma;
+}
+
+
+- (id)initWithImageUnscale:(NSImage*)image scaledSize:(NSSize)size {
+    self = [super init];
+    
+    if (self)
+    {
+        //        NSImage *finalImage = [self scaleImage:image size:size];
+        //        self.scaledImage = finalImage;
+        self.scaledImage = image;
+        
+        [self analyzeImage:image];
+    }
+    
+    return self;
+}
 
 - (id)initWithImage:(NSImage*)image scaledSize:(NSSize)size {
     self = [super init];
@@ -178,6 +300,7 @@
     NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
     NSImage *finalImage = [[NSImage alloc] initWithSize:scaledImage.size];
     [finalImage addRepresentation:bitmapRep];
+//    CGImageRelease(cgImage);
     return finalImage;
 }
 
@@ -229,6 +352,8 @@
     self.primaryColor = primaryColor;
     self.secondaryColor = secondaryColor;
     self.detailColor = detailColor;
+    
+    imageColors = nil;
 }
 
 #define fequalzero(a) (fabs(a) < FLT_EPSILON)

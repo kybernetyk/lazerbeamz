@@ -26,6 +26,8 @@
 @property(nonatomic, copy) NSImage *scaledImage;
 
 + (SLColorArt*) colorArtForImageAtPath: (NSString *) imagePath;
++ (SLColorArt*) colorArtForMainScreen;
++ (NSArray<SLColorArt*>*) colorArtsForMainScreen;
 + (NSString *) currentDesktopWallpaperPath;
 
 

@@ -22,8 +22,6 @@ class ColorDB {
             let errorMessage = String(cString: sqlite3_errmsg(db))
             throw ColorDBError.SQLiteError(message: errorMessage)
         }
-        
-        
     }
     
     func insert(filename: String, colorset: ColorSet) throws {
