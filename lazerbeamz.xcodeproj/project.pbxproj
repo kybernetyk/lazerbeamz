@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D0472121DB931DC0091264A /* ColorDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0472111DB931DC0091264A /* ColorDB.swift */; };
 		0D0472191DB9349C0091264A /* Colorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0472181DB9349C0091264A /* Colorizer.swift */; };
 		0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5866E61DB2BAAC006F553B /* SLColorArt.m */; };
 		0D5866E91DB2BACC006F553B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5866E81DB2BACC006F553B /* libsqlite3.tbd */; };
@@ -29,9 +28,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0D0472111DB931DC0091264A /* ColorDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorDB.swift; sourceTree = "<group>"; };
-		0D0472161DB933830091264A /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		0D0472171DB933830091264A /* sqlmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlmod.h; sourceTree = "<group>"; };
 		0D0472181DB9349C0091264A /* Colorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colorizer.swift; sourceTree = "<group>"; };
 		0D5866E41DB2BAAB006F553B /* lazerbeamz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lazerbeamz-Bridging-Header.h"; sourceTree = "<group>"; };
 		0D5866E51DB2BAAC006F553B /* SLColorArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLColorArt.h; sourceTree = "<group>"; };
@@ -60,7 +56,6 @@
 			isa = PBXGroup;
 			children = (
 				0D04721B1DB93E420091264A /* 3rdparty */,
-				0D0472111DB931DC0091264A /* ColorDB.swift */,
 				0D0472181DB9349C0091264A /* Colorizer.swift */,
 			);
 			name = "Wallpaper Stuff";
@@ -86,8 +81,6 @@
 		0D04721D1DB93E580091264A /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
-				0D0472161DB933830091264A /* module.modulemap */,
-				0D0472171DB933830091264A /* sqlmod.h */,
 				0D5866E41DB2BAAB006F553B /* lazerbeamz-Bridging-Header.h */,
 			);
 			name = Supporting;
@@ -191,7 +184,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DA4EED21DB1435500F65A9A /* main.swift in Sources */,
-				0D0472121DB931DC0091264A /* ColorDB.swift in Sources */,
 				0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */,
 				0D0472191DB9349C0091264A /* Colorizer.swift in Sources */,
 				0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */,
