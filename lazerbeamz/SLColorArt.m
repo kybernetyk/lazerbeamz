@@ -118,19 +118,28 @@
         sqlite3_close(database);
         return nil;
     }
-    if ([sqliteData count] < 2) {
-        NSLog(@"sqliteData.count < 2");
+    if ([sqliteData count] == 0) {
+        NSLog(@"sqliteData.count == 0");
         sqlite3_close(database);
         return nil;
     }
 
-    NSUInteger pic_idx = [sqliteData count] - 1;
+    NSInteger pic_idx = [sqliteData count] - 1;
+    if (pic_idx < 0) {
+        pic_idx = 0;
+    }
     NSString *fn = sqliteData[pic_idx];
     if ([fn containsString: @"/"]) {
         return fn.stringByExpandingTildeInPath;
     }
     
     NSString *base = [[[NSWorkspace sharedWorkspace] desktopImageURLForScreen: [NSScreen mainScreen]] path];
+    NSString *ext = [base pathExtension].lowercaseString;
+    BOOL base_is_a_file = ([ext containsString: @"jpg"] || [ext containsString: @"png"] || [ext containsString: @"jpeg"]);
+    if (base_is_a_file > 0) {
+        return base;
+    }
+    
     return [base stringByAppendingPathComponent: fn].stringByExpandingTildeInPath;
 }
 
