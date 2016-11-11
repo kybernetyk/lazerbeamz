@@ -118,19 +118,20 @@
         sqlite3_close(database);
         return nil;
     }
-    if ([sqliteData count] == 0) {
-        NSLog(@"sqliteData.count == 0");
+    if ([sqliteData count] < 2) {
+        NSLog(@"sqliteData.count < 2");
         sqlite3_close(database);
         return nil;
     }
-    NSUInteger cnt = [sqliteData count] - 1;
-    NSString *fn = sqliteData[cnt];
+
+    NSUInteger pic_idx = [sqliteData count] - 1;
+    NSString *fn = sqliteData[pic_idx];
+    if ([fn containsString: @"/"]) {
+        return fn.stringByExpandingTildeInPath;
+    }
+    
     NSString *base = [[[NSWorkspace sharedWorkspace] desktopImageURLForScreen: [NSScreen mainScreen]] path];
-    
-    
-    
-    
-    return [base stringByAppendingPathComponent: fn];
+    return [base stringByAppendingPathComponent: fn].stringByExpandingTildeInPath;
 }
 
 + (NSImage *)mainScreenShot {
