@@ -174,6 +174,7 @@ func doWallpaperMode() {
         //change according to yours
         fobbleLight(light: 1, color: colors.primary)
         fobbleLight(light: 2, color: colors.secondary)
+        fobbleLight(light: 3, color: colors.background)
         fobbleLight(light: 4, color: colors.detail)
         fobbleLight(light: 5, color: colors.background)
     }
@@ -182,7 +183,7 @@ func doWallpaperMode() {
     bridge.turnOn()
     bridge.setSaturation(saturation: 255)
     bridge.setBrightness(brightness: 0)
-    bridge.turnOff(light: 3) //annoying light is annoying
+    //bridge.turnOff(light: 3) //annoying light is annoying
 
     var currentWallpaper = ""
     while true {
