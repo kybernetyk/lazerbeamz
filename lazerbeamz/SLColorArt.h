@@ -25,6 +25,9 @@
 @property(retain, readonly) NSColor *detailColor;
 @property(nonatomic, copy) NSImage *scaledImage;
 
++ (NSImage *)mainScreenShot;
++ (NSArray<NSImage*>*) partialScreenShots; //returns left, center, right
+
 + (SLColorArt*) colorArtForImageAtPath: (NSString *) imagePath;
 + (SLColorArt*) colorArtForMainScreen;
 + (NSArray<SLColorArt*>*) colorArtsForMainScreen;

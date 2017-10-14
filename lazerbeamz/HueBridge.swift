@@ -82,6 +82,14 @@ struct Lazerbeamz {
                                      saturation: saturation,
                                      transitionTime: cfg.transitionTime)
         }
+
+        func setHSV(light: Int, hue: Int, sat: Int, bri: Int) {
+            Lazerbeamz.setHsv(bridgeAddress: self.cfg.ipOrHostname,
+                              apiKey: self.cfg.apiKey,
+                              lightID: light,
+                              hue: hue, sat: sat, bri: bri,
+                              transitionTime: cfg.transitionTime)
+        }
         
         /* following operations will apply to all connected lights */
         func turnOn() {
@@ -130,6 +138,20 @@ extension Lazerbeamz {
                      apiKey: apiKey,
                      lightID: lightID,
                      payload: ["hue" : val,
+                               "transitiontime" : transitionTime])
+    }
+
+    fileprivate static func setHsv(bridgeAddress: String, apiKey: String, lightID: Int, hue: Int, sat: Int, bri: Int, transitionTime: Int) {
+        let hue = min(max(0, hue), 0xffff)
+        let bri = min(max(0, bri), 255)
+        let sat = min(max(0, sat), 255)
+
+        sendToBridge(bridgeAddress: bridgeAddress,
+                     apiKey: apiKey,
+                     lightID: lightID,
+                     payload: ["hue" : hue,
+                               "bri" : bri,
+                               "sat" : sat,
                                "transitiontime" : transitionTime])
     }
     

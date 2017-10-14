@@ -42,6 +42,11 @@ class Colorizer {
         let cols = try self.calculateColorSetForScreen()
         return cols
     }
+
+    func dominantColorForMainScreen() throws -> ColorSet {
+        let cols = try self.calculateColorSetForScreenWithDominantColorLib()
+        return cols
+    }
     
     func colorsForMainScreen() throws -> [ColorSet] {
         let cols = try self.calculateColorSetsForScreen()
@@ -131,6 +136,30 @@ fileprivate extension Colorizer {
         
         
         return colset;
+    }
+
+    func calculateColorSetForScreenWithDominantColorLib() throws -> ColorSet {
+        if let img = SLColorArt.mainScreenShot() {
+            let cols = img.dominantColors().sorted {
+                $0.absoluteValue < $1.absoluteValue
+            }
+            var ret: ColorSet = ColorSet()
+            if cols.count >= 1 {
+                ret.primary = Color(hue: Float(cols[0].hueComponent), saturation: Float(cols[0].saturationComponent), brightness: Float(cols[0].brightnessComponent))
+            }
+
+            if cols.count >= 2 {
+                ret.secondary = Color(hue: Float(cols[1].hueComponent), saturation: Float(cols[1].saturationComponent), brightness: Float(cols[1].brightnessComponent))
+            }
+            if cols.count >= 3 {
+                ret.detail = Color(hue: Float(cols[2].hueComponent), saturation: Float(cols[2].saturationComponent), brightness: Float(cols[2].brightnessComponent))
+            }
+            if cols.count >= 4 {
+                ret.background = Color(hue: Float(cols[3].hueComponent), saturation: Float(cols[3].saturationComponent), brightness: Float(cols[3].brightnessComponent))
+            }
+            return ret
+        }
+        return ColorSet()
     }
 
     func calculateColorSetsForScreen() throws -> [ColorSet] {

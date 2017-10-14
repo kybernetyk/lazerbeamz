@@ -65,16 +65,17 @@ func updateLive2() {
         let s = Int(color.saturation * 255)
         
         print("light \(light) => h: \(h), s: \(s), b: \(b)")
-        
-        bridge.setHue(light: light, hue: h)
-        bridge.setBrightness(light: light, brightness: b)
-        bridge.setSaturation(light: light, saturation: s)
+        bridge.setHSV(light: light, hue: h, sat: s, bri: b)
+
+        //        bridge.setHue(light: light, hue: h)
+        //        bridge.setBrightness(light: light, brightness: b)
+        //        bridge.setSaturation(light: light, saturation: s)
     }
     
     //these lighting layout is hardcoded for my office.
     //change according to yours
     fobbleLight(light: 1, color: colors[0].primary)
-    fobbleLight(light: 4, color: colors[1].primary)
+    //    fobbleLight(light: 4, color: colors[1].primary)
     fobbleLight(light: 2, color: colors[2].primary)
     fobbleLight(light: 5, color: colors[3].primary)
     
@@ -87,11 +88,13 @@ func doLiveMode() {
         var prevColors = prevColors
         
         do {
-            colors = try colorizer.colorForMainScreen()
+            colors = try colorizer.dominantColorForMainScreen()
         } catch {
             print(error)
             return prevColors
         }
+
+        
         
         //saturation and brightness are tricky to get right for a dark room
         //some colors just don't translate well to lighting and we could
@@ -103,31 +106,36 @@ func doLiveMode() {
             let s = Int(color.saturation * 255)
             
             print("light \(light) => h: \(h), s: \(s), b: \(b)")
+
+            bridge.setHSV(light: light, hue: h, sat: s, bri: b)
             
-            bridge.setHue(light: light, hue: h)
-            bridge.setBrightness(light: light, brightness: b)
-            bridge.setSaturation(light: light, saturation: s)
+            //            bridge.setHue(light: light, hue: h)
+            //            bridge.setBrightness(light: light, brightness: b)
+            //            bridge.setSaturation(light: light, saturation: s)
         }
         
         //these lighting layout is hardcoded for my office.
         //change according to yours
         if prevColors.primary != colors.primary {
             fobbleLight(light: 1, color: colors.primary)
+            fobbleLight(light: 2, color: colors.primary)
+            fobbleLight(light: 5, color: colors.primary)
+
             prevColors.primary = colors.primary
         }
-        if prevColors.secondary != colors.secondary {
-            fobbleLight(light: 2, color: colors.secondary)
-            prevColors.secondary = colors.secondary
-        }
-        if prevColors.detail != colors.detail {
-            fobbleLight(light: 4, color: colors.detail)
-            prevColors.detail = colors.detail
-        }
-        if prevColors.background != colors.background {
-            fobbleLight(light: 5, color: colors.background)
-            prevColors.background = colors.background
-        }
-        
+//                if prevColors.secondary != colors.secondary {
+//                    fobbleLight(light: 2, color: colors.secondary)
+//                    prevColors.secondary = colors.secondary
+//                }
+//        //        if prevColors.detail != colors.detail {
+//        //            fobbleLight(light: 4, color: colors.detail)
+//        //            prevColors.detail = colors.detail
+//        //        }
+//                if prevColors.background != colors.background {
+//                    fobbleLight(light: 5, color: colors.background)
+//                    prevColors.background = colors.background
+//                }
+
         return prevColors
     }
 
@@ -143,7 +151,7 @@ func doLiveMode() {
         autoreleasepool {
             prevColors = updateLive(prevColors: prevColors);
         }
-        usleep(100 * 1000)
+        usleep(250 * 1000)
     }
 }
 
@@ -169,10 +177,11 @@ func doWallpaperMode() {
             let s = 100 + Int(color.saturation * 155)
             
             print("light \(light) => h: \(h), s: \(s), b: \(b)")
-            
-            bridge.setHue(light: light, hue: h)
-            bridge.setBrightness(light: light, brightness: b)
-            bridge.setSaturation(light: light, saturation: s)
+            bridge.setHSV(light: light, hue: h, sat: s, bri: b)
+            //
+            //            bridge.setHue(light: light, hue: h)
+            //            bridge.setBrightness(light: light, brightness: b)
+            //            bridge.setSaturation(light: light, saturation: s)
         }
         
         //these lighting layout is hardcoded for my office.
@@ -180,7 +189,7 @@ func doWallpaperMode() {
         fobbleLight(light: 1, color: colors.primary)
         fobbleLight(light: 2, color: colors.secondary)
         fobbleLight(light: 3, color: colors.background)
-        fobbleLight(light: 4, color: colors.detail)
+        //        fobbleLight(light: 4, color: colors.detail)
         fobbleLight(light: 5, color: colors.background)
     }
     
@@ -234,10 +243,11 @@ func doWallpaperContrastMode() {
             let s = 100 + Int(color.saturation * 155)
             
             print("light \(light) => h: \(h), s: \(s), b: \(b)")
-            
-            bridge.setHue(light: light, hue: h)
-            bridge.setBrightness(light: light, brightness: b)
-            bridge.setSaturation(light: light, saturation: s)
+            bridge.setHSV(light: light, hue: h, sat: s, bri: b)
+
+            //            bridge.setHue(light: light, hue: h)
+            //            bridge.setBrightness(light: light, brightness: b)
+            //            bridge.setSaturation(light: light, saturation: s)
         }
         
         //these lighting layout is hardcoded for my office.

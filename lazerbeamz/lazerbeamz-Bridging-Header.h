@@ -3,3 +3,5 @@
 //
 
 #import "SLColorArt.h"
+#import "INVector3.h"
+#import "ColorSpaceConversion.h"

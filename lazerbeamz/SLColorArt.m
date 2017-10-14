@@ -184,6 +184,45 @@
     return result;
 }
 
++ (NSArray<NSImage*>*) partialScreenShots {
+    NSImage *img = [SLColorArt mainScreenShot];
+    if (!img) {
+        return nil;
+    }
+
+    NSSize sze = [img size];
+
+    NSMutableArray *ma = @[].mutableCopy;
+
+    {
+        NSSize s = NSMakeSize(sze.width/3.0, sze.height);
+        NSRect r = NSMakeRect(0, 0, s.width, s.height);
+
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        [ma addObject: sub];
+    }
+
+    {
+        NSSize s = NSMakeSize(sze.width/3.0, sze.height);
+        NSRect r = NSMakeRect(s.width, 0, s.width, s.height);
+
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        [ma addObject: sub];
+    }
+
+    {
+        NSSize s = NSMakeSize(sze.width/3.0, sze.height);
+        NSRect r = NSMakeRect(s.width*2, 0, s.width, s.height);
+
+        NSImage *sub = [self imageWithRect: r ofImage: img];
+        [ma addObject: sub];
+    }
+
+
+    return ma;
+
+}
+
 + (NSArray<SLColorArt*>*) colorArtsForMainScreen {
     NSImage *img = [SLColorArt mainScreenShot];
     if (!img) {
@@ -327,9 +366,9 @@
     
     if ( primaryColor == nil )
     {
-#if DEBUG
-        NSLog(@"SLColorArt::missed primary");
-#endif
+//#if DEBUG
+//        NSLog(@"SLColorArt::missed primary");
+//#endif
         if ( darkBackground )
             primaryColor = [[NSColor whiteColor] colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
         else
@@ -338,9 +377,9 @@
     
     if ( secondaryColor == nil )
     {
-#if DEBUG
-        NSLog(@"SLColorArt::missed secondary");
-#endif
+//#if DEBUG
+//        NSLog(@"SLColorArt::missed secondary");
+//#endif
         if ( darkBackground )
             secondaryColor = [[NSColor whiteColor] colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
         else
@@ -349,9 +388,9 @@
     
     if ( detailColor == nil )
     {
-#if DEBUG
-        NSLog(@"SLColorArt::missed detail");
-#endif
+//#if DEBUG
+//        NSLog(@"SLColorArt::missed detail");
+//#endif
         if ( darkBackground )
             detailColor = [[NSColor whiteColor] colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
         else

@@ -10,6 +10,15 @@
 		0D0472191DB9349C0091264A /* Colorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0472181DB9349C0091264A /* Colorizer.swift */; };
 		0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5866E61DB2BAAC006F553B /* SLColorArt.m */; };
 		0D5866E91DB2BACC006F553B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5866E81DB2BACC006F553B /* libsqlite3.tbd */; };
+		0D756F0B1F92832300D76EFD /* ColorDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756EFF1F92830500D76EFD /* ColorDifference.swift */; };
+		0D756F0C1F92832300D76EFD /* ColorSpaceConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F011F92830500D76EFD /* ColorSpaceConversion.m */; };
+		0D756F0D1F92832300D76EFD /* DominantColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F031F92830500D76EFD /* DominantColors.swift */; };
+		0D756F0E1F92832800D76EFD /* INVector3.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F061F92830500D76EFD /* INVector3.m */; };
+		0D756F0F1F92832800D76EFD /* INVector3SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F071F92830500D76EFD /* INVector3SwiftExtensions.swift */; };
+		0D756F101F92832800D76EFD /* KMeans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F081F92830500D76EFD /* KMeans.swift */; };
+		0D756F111F92832800D76EFD /* Memoization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F091F92830500D76EFD /* Memoization.swift */; };
+		0D756F121F92832800D76EFD /* PlatformExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756F0A1F92830500D76EFD /* PlatformExtensions.swift */; };
+		0D756F141F92837E00D76EFD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D756F131F92837E00D76EFD /* GLKit.framework */; };
 		0DA4EED21DB1435500F65A9A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA4EED11DB1435500F65A9A /* main.swift */; };
 		0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA4EED81DB1439300F65A9A /* HueBridge.swift */; };
 		0DA4EEDC1DB1445400F65A9A /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */; };
@@ -33,6 +42,17 @@
 		0D5866E51DB2BAAC006F553B /* SLColorArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLColorArt.h; sourceTree = "<group>"; };
 		0D5866E61DB2BAAC006F553B /* SLColorArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLColorArt.m; sourceTree = "<group>"; };
 		0D5866E81DB2BACC006F553B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		0D756EFF1F92830500D76EFD /* ColorDifference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDifference.swift; sourceTree = "<group>"; };
+		0D756F001F92830500D76EFD /* ColorSpaceConversion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorSpaceConversion.h; sourceTree = "<group>"; };
+		0D756F011F92830500D76EFD /* ColorSpaceConversion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorSpaceConversion.m; sourceTree = "<group>"; };
+		0D756F031F92830500D76EFD /* DominantColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DominantColors.swift; sourceTree = "<group>"; };
+		0D756F051F92830500D76EFD /* INVector3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INVector3.h; sourceTree = "<group>"; };
+		0D756F061F92830500D76EFD /* INVector3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INVector3.m; sourceTree = "<group>"; };
+		0D756F071F92830500D76EFD /* INVector3SwiftExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INVector3SwiftExtensions.swift; sourceTree = "<group>"; };
+		0D756F081F92830500D76EFD /* KMeans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMeans.swift; sourceTree = "<group>"; };
+		0D756F091F92830500D76EFD /* Memoization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memoization.swift; sourceTree = "<group>"; };
+		0D756F0A1F92830500D76EFD /* PlatformExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformExtensions.swift; sourceTree = "<group>"; };
+		0D756F131F92837E00D76EFD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		0DA4EECE1DB1435500F65A9A /* lazerbeamz */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lazerbeamz; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA4EED11DB1435500F65A9A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		0DA4EED81DB1439300F65A9A /* HueBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HueBridge.swift; sourceTree = "<group>"; };
@@ -44,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D756F141F92837E00D76EFD /* GLKit.framework in Frameworks */,
 				0D5866E91DB2BACC006F553B /* libsqlite3.tbd in Frameworks */,
 				0DA4EEDC1DB1445400F65A9A /* libcurl.tbd in Frameworks */,
 			);
@@ -86,9 +107,27 @@
 			name = Supporting;
 			sourceTree = "<group>";
 		};
+		0D756EFE1F92830500D76EFD /* DomCol */ = {
+			isa = PBXGroup;
+			children = (
+				0D756EFF1F92830500D76EFD /* ColorDifference.swift */,
+				0D756F001F92830500D76EFD /* ColorSpaceConversion.h */,
+				0D756F011F92830500D76EFD /* ColorSpaceConversion.m */,
+				0D756F031F92830500D76EFD /* DominantColors.swift */,
+				0D756F051F92830500D76EFD /* INVector3.h */,
+				0D756F061F92830500D76EFD /* INVector3.m */,
+				0D756F071F92830500D76EFD /* INVector3SwiftExtensions.swift */,
+				0D756F081F92830500D76EFD /* KMeans.swift */,
+				0D756F091F92830500D76EFD /* Memoization.swift */,
+				0D756F0A1F92830500D76EFD /* PlatformExtensions.swift */,
+			);
+			path = DomCol;
+			sourceTree = "<group>";
+		};
 		0DA4EEC51DB1435500F65A9A = {
 			isa = PBXGroup;
 			children = (
+				0D756EFE1F92830500D76EFD /* DomCol */,
 				0DA4EED01DB1435500F65A9A /* lazerbeamz */,
 				0DA4EECF1DB1435500F65A9A /* Products */,
 				0DA4EEDA1DB1445400F65A9A /* Frameworks */,
@@ -117,6 +156,7 @@
 		0DA4EEDA1DB1445400F65A9A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D756F131F92837E00D76EFD /* GLKit.framework */,
 				0D5866E81DB2BACC006F553B /* libsqlite3.tbd */,
 				0DA4EEDB1DB1445400F65A9A /* libcurl.tbd */,
 			);
@@ -184,8 +224,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DA4EED21DB1435500F65A9A /* main.swift in Sources */,
+				0D756F0B1F92832300D76EFD /* ColorDifference.swift in Sources */,
+				0D756F0C1F92832300D76EFD /* ColorSpaceConversion.m in Sources */,
+				0D756F0E1F92832800D76EFD /* INVector3.m in Sources */,
+				0D756F121F92832800D76EFD /* PlatformExtensions.swift in Sources */,
+				0D756F111F92832800D76EFD /* Memoization.swift in Sources */,
+				0D756F101F92832800D76EFD /* KMeans.swift in Sources */,
 				0DA4EED91DB1439300F65A9A /* HueBridge.swift in Sources */,
+				0D756F0D1F92832300D76EFD /* DominantColors.swift in Sources */,
 				0D0472191DB9349C0091264A /* Colorizer.swift in Sources */,
+				0D756F0F1F92832800D76EFD /* INVector3SwiftExtensions.swift in Sources */,
 				0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
