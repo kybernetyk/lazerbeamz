@@ -139,27 +139,26 @@ fileprivate extension Colorizer {
     }
 
     func calculateColorSetForScreenWithDominantColorLib() throws -> ColorSet {
+        var ret: ColorSet = ColorSet()
+
         if let img = SLColorArt.mainScreenShot() {
-            let cols = img.dominantColors().sorted {
-                $0.absoluteValue < $1.absoluteValue
-            }
-            var ret: ColorSet = ColorSet()
+            let cols = img.dominantColors()
             if cols.count >= 1 {
                 ret.primary = Color(hue: Float(cols[0].hueComponent), saturation: Float(cols[0].saturationComponent), brightness: Float(cols[0].brightnessComponent))
             }
-
-            if cols.count >= 2 {
-                ret.secondary = Color(hue: Float(cols[1].hueComponent), saturation: Float(cols[1].saturationComponent), brightness: Float(cols[1].brightnessComponent))
-            }
-            if cols.count >= 3 {
-                ret.detail = Color(hue: Float(cols[2].hueComponent), saturation: Float(cols[2].saturationComponent), brightness: Float(cols[2].brightnessComponent))
-            }
-            if cols.count >= 4 {
-                ret.background = Color(hue: Float(cols[3].hueComponent), saturation: Float(cols[3].saturationComponent), brightness: Float(cols[3].brightnessComponent))
-            }
-            return ret
         }
-        return ColorSet()
+        if let parts = SLColorArt.partialScreenShots() {
+            let colLeft = parts[0].dominantColors()[0]
+            let colMid = parts[1].dominantColors()[0]
+            let colRight = parts[2].dominantColors()[0]
+
+            ret.secondary = Color(hue: Float(colLeft.hueComponent), saturation: Float(colLeft.saturationComponent), brightness: Float(colLeft.brightnessComponent))
+            ret.detail = Color(hue: Float(colMid.hueComponent), saturation: Float(colMid.saturationComponent), brightness: Float(colMid.brightnessComponent))
+            ret.background = Color(hue: Float(colRight.hueComponent), saturation: Float(colRight.saturationComponent), brightness: Float(colRight.brightnessComponent))
+
+        }
+
+        return ret
     }
 
     func calculateColorSetsForScreen() throws -> [ColorSet] {

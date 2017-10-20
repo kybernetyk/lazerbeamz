@@ -123,18 +123,40 @@ func doLiveMode() {
 
             prevColors.primary = colors.primary
         }
-//                if prevColors.secondary != colors.secondary {
-//                    fobbleLight(light: 2, color: colors.secondary)
-//                    prevColors.secondary = colors.secondary
-//                }
-//        //        if prevColors.detail != colors.detail {
-//        //            fobbleLight(light: 4, color: colors.detail)
-//        //            prevColors.detail = colors.detail
-//        //        }
-//                if prevColors.background != colors.background {
-//                    fobbleLight(light: 5, color: colors.background)
-//                    prevColors.background = colors.background
-//                }
+//        if prevColors.secondary != colors.secondary {
+//            fobbleLight(light: 2, color: colors.secondary)
+//            prevColors.secondary = colors.secondary
+//        }
+////        if prevColors.detail != colors.detail {
+////            fobbleLight(light: 4, color: colors.detail)
+////            prevColors.detail = colors.detail
+////        }
+//        if prevColors.background != colors.background {
+//            fobbleLight(light: 5, color: colors.background)
+//            prevColors.background = colors.background
+//        }
+
+/*
+        if prevColors.secondary != colors.secondary {
+            fobbleLight(light: 2, color: colors.secondary)
+            //            fobbleLight(light: 2, color: colors.primary)
+            //            fobbleLight(light: 5, color: colors.primary)
+
+            prevColors.secondary = colors.secondary
+        }
+        if prevColors.detail != colors.detail {
+            fobbleLight(light: 5, color: colors.detail)
+            prevColors.detail = colors.detail
+        }
+        //        if prevColors.detail != colors.detail {
+        //            fobbleLight(light: 4, color: colors.detail)
+        //            prevColors.detail = colors.detail
+        //        }
+        if prevColors.background != colors.background {
+            fobbleLight(light: 1, color: colors.background)
+            prevColors.background = colors.background
+        }
+*/
 
         return prevColors
     }
