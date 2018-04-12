@@ -113,14 +113,26 @@ func doLiveMode() {
             //            bridge.setBrightness(light: light, brightness: b)
             //            bridge.setSaturation(light: light, saturation: s)
         }
+
+        func fobbleLights(color: Color) {
+            let h = Int(color.hue * 0xffff) + 3655
+            let b = Int(color.brightness * 127)
+            let s = Int(color.saturation * 255)
+
+            print("all lights => h: \(h), s: \(s), b: \(b)")
+            bridge.setHSV(light: 0, hue: h, sat: s, bri: b)
+        }
         
         //these lighting layout is hardcoded for my office.
         //change according to yours
         if prevColors.primary != colors.primary {
             fobbleLight(light: 1, color: colors.primary)
             fobbleLight(light: 2, color: colors.primary)
+            fobbleLight(light: 3, color: colors.primary)
+            fobbleLight(light: 4, color: colors.primary)
             fobbleLight(light: 5, color: colors.primary)
 
+//            fobbleLights(color: colors.primary)
             prevColors.primary = colors.primary
         }
 //        if prevColors.secondary != colors.secondary {
