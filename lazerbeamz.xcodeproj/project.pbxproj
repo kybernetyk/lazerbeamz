@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0D0472191DB9349C0091264A /* Colorizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0472181DB9349C0091264A /* Colorizer.swift */; };
+		0D0D3F3A20873FB400C30280 /* LazerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0D3F3920873FB400C30280 /* LazerCommand.swift */; };
+		0D0D3F3C20873FE500C30280 /* TrivialCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0D3F3B20873FE500C30280 /* TrivialCommands.swift */; };
 		0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5866E61DB2BAAC006F553B /* SLColorArt.m */; };
 		0D5866E91DB2BACC006F553B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5866E81DB2BACC006F553B /* libsqlite3.tbd */; };
 		0D756F0B1F92832300D76EFD /* ColorDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D756EFF1F92830500D76EFD /* ColorDifference.swift */; };
@@ -38,6 +40,8 @@
 
 /* Begin PBXFileReference section */
 		0D0472181DB9349C0091264A /* Colorizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colorizer.swift; sourceTree = "<group>"; };
+		0D0D3F3920873FB400C30280 /* LazerCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazerCommand.swift; sourceTree = "<group>"; };
+		0D0D3F3B20873FE500C30280 /* TrivialCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrivialCommands.swift; sourceTree = "<group>"; };
 		0D5866E41DB2BAAB006F553B /* lazerbeamz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lazerbeamz-Bridging-Header.h"; sourceTree = "<group>"; };
 		0D5866E51DB2BAAC006F553B /* SLColorArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLColorArt.h; sourceTree = "<group>"; };
 		0D5866E61DB2BAAC006F553B /* SLColorArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLColorArt.m; sourceTree = "<group>"; };
@@ -107,6 +111,15 @@
 			name = Supporting;
 			sourceTree = "<group>";
 		};
+		0D0D3F3820873F9C00C30280 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				0D0D3F3920873FB400C30280 /* LazerCommand.swift */,
+				0D0D3F3B20873FE500C30280 /* TrivialCommands.swift */,
+			);
+			name = Plugins;
+			sourceTree = "<group>";
+		};
 		0D756EFE1F92830500D76EFD /* DomCol */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +158,7 @@
 		0DA4EED01DB1435500F65A9A /* lazerbeamz */ = {
 			isa = PBXGroup;
 			children = (
+				0D0D3F3820873F9C00C30280 /* Plugins */,
 				0D04721C1DB93E4E0091264A /* Hue */,
 				0D04721A1DB93E370091264A /* Wallpaper Stuff */,
 				0D04721D1DB93E580091264A /* Supporting */,
@@ -226,6 +240,7 @@
 				0DA4EED21DB1435500F65A9A /* main.swift in Sources */,
 				0D756F0B1F92832300D76EFD /* ColorDifference.swift in Sources */,
 				0D756F0C1F92832300D76EFD /* ColorSpaceConversion.m in Sources */,
+				0D0D3F3A20873FB400C30280 /* LazerCommand.swift in Sources */,
 				0D756F0E1F92832800D76EFD /* INVector3.m in Sources */,
 				0D756F121F92832800D76EFD /* PlatformExtensions.swift in Sources */,
 				0D756F111F92832800D76EFD /* Memoization.swift in Sources */,
@@ -234,6 +249,7 @@
 				0D756F0D1F92832300D76EFD /* DominantColors.swift in Sources */,
 				0D0472191DB9349C0091264A /* Colorizer.swift in Sources */,
 				0D756F0F1F92832800D76EFD /* INVector3SwiftExtensions.swift in Sources */,
+				0D0D3F3C20873FE500C30280 /* TrivialCommands.swift in Sources */,
 				0D5866E71DB2BAAC006F553B /* SLColorArt.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

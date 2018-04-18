@@ -65,7 +65,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "--live"
+            argument = "bri 1 255"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

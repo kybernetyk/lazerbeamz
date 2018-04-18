@@ -17,9 +17,10 @@ enum Mode {
     case WallpaperContrast
     case Live
     case DumpState
+    case Command
 }
 
-var mode = Mode.Help
+var mode = Mode.Command
 
 if CommandLine.arguments.contains("--live") {
     mode = .Live
@@ -42,6 +43,7 @@ if CommandLine.arguments.contains("--help") {
 }
 
 
+var commands: [Command] = []
 var bridge = Lazerbeamz.Bridge()
 let colorizer = Colorizer()
 
@@ -346,7 +348,7 @@ func doDumpMode() {
 }
 
 func doHelpMode() {
-    print("syntax: lazerbeamz <mode_switch>")
+    print("syntax: lazerbeamz <mode_switch || command>")
     print("valid mode switches:")
     print("  --wallpaper")
     print("    set light colors to current desktop wallpaper colors")
@@ -355,9 +357,13 @@ func doHelpMode() {
     print("  --live")
     print("    poor man's ambilight")
     print("  --dump")
-    print("    dump script to restore current light state")
+    print("    dump script that saves current light state")
     print("  --help")
-    print("    duh")
+    print("    help")
+    print("  commands:")
+    for cmd in commands {
+        print("    \(cmd.helpString)")
+    }
 }
 
 func doMode(mode: Mode) {
@@ -366,8 +372,34 @@ func doMode(mode: Mode) {
     case .Wallpaper: doWallpaperMode()
     case .WallpaperContrast: doWallpaperContrastMode()
     case .DumpState: doDumpMode()
+    case .Command: doCommandMode()
     default: doHelpMode()
     }
 }
 
+
+func doCommandMode() {
+    var args = CommandLine.arguments
+    args.removeFirst()
+    args = args.map { $0.lowercased() }
+
+    for cmd in commands {
+        if cmd.canHandle(args: args) {
+            if (!cmd.exec(args: args, bridge: bridge)) {
+                print(cmd.helpString)
+            }
+            return
+        }
+    }
+    doMode(mode: .Help)
+}
+
+func registerCommands() {
+    commands.append(CmdBri())
+    commands.append(CmdHue())
+    commands.append(CmdSat())
+    commands.append(CmdOnOff())
+}
+
+registerCommands()
 doMode(mode: mode)
