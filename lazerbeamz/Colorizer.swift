@@ -53,6 +53,10 @@ class Colorizer {
         return cols
     }
 
+    func colorsForImageFile(_ path: String) throws -> ColorSet {
+        let cols = try self.calculateColorSetForFile(file: path)
+        return cols
+    }
 }
 
 fileprivate extension Colorizer {

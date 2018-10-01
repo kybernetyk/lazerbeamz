@@ -18,6 +18,7 @@ enum Mode {
     case Live
     case DumpState
     case Command
+    case ImageFile
 }
 
 var mode = Mode.Command
@@ -40,6 +41,10 @@ if CommandLine.arguments.contains("--dump") {
 
 if CommandLine.arguments.contains("--help") {
     mode = .Help
+}
+
+if CommandLine.arguments.contains("--image") {
+    mode = .ImageFile
 }
 
 
@@ -76,10 +81,12 @@ func updateLive2() {
     
     //these lighting layout is hardcoded for my office.
     //change according to yours
-    fobbleLight(light: 1, color: colors[0].primary)
+//    fobbleLight(light: 1, color: colors[0].primary)
     //    fobbleLight(light: 4, color: colors[1].primary)
-    fobbleLight(light: 2, color: colors[2].primary)
+//    fobbleLight(light: 2, color: colors[2].primary)
     fobbleLight(light: 5, color: colors[3].primary)
+    fobbleLight(light: 5, color: colors[0].primary)
+    
     
 }
 
@@ -107,7 +114,7 @@ func doLiveMode() {
             let b = Int(color.brightness * 127)
             let s = Int(color.saturation * 255)
             
-            print("light \(light) => h: \(h), s: \(s), b: \(b)")
+//            print("light \(light) => h: \(h), s: \(s), b: \(b)")
 
             bridge.setHSV(light: light, hue: h, sat: s, bri: b)
             
@@ -121,15 +128,15 @@ func doLiveMode() {
             let b = Int(color.brightness * 127)
             let s = Int(color.saturation * 255)
 
-            print("all lights => h: \(h), s: \(s), b: \(b)")
+//            print("all lights => h: \(h), s: \(s), b: \(b)")
             bridge.setHSV(light: 0, hue: h, sat: s, bri: b)
         }
         
         //these lighting layout is hardcoded for my office.
         //change according to yours
         if prevColors.primary != colors.primary {
-            fobbleLight(light: 1, color: colors.primary)
-            fobbleLight(light: 2, color: colors.primary)
+//            fobbleLight(light: 1, color: colors.primary)
+//            fobbleLight(light: 2, color: colors.primary)
             fobbleLight(light: 3, color: colors.primary)
             fobbleLight(light: 4, color: colors.primary)
             fobbleLight(light: 5, color: colors.primary)
@@ -178,7 +185,9 @@ func doLiveMode() {
     bridge.turnOn()
     bridge.setSaturation(saturation: 255)
     bridge.setBrightness(brightness: 0)
-    bridge.turnOff(light: 3) //annoying light is annoying
+    bridge.turnOff(light: 1) //annoying light is annoying
+    bridge.turnOff(light: 2) //annoying light is annoying
+//    bridge.turnOff(light: 3) //annoying light is annoying
 
     bridge.cfg.transitionTime = 5
     var prevColors = ColorSet()
@@ -319,6 +328,59 @@ func doWallpaperContrastMode() {
     }
 }
 
+func doImageFileMode() {
+    func updateLightsWithFile(_ filename: String) {
+        var colors = ColorSet()
+        
+        do {
+            colors = try colorizer.colorsForImageFile(filename)
+        } catch {
+            print(error)
+            return
+        }
+        
+        //saturation and brightness are tricky to get right for a dark room
+        //some colors just don't translate well to lighting and we could
+        //be sitting in low saturated (= white) colors all time
+        //the same with brightness. let's cap it at 100.
+        func fobbleLight(light: Int, color: Color) {
+            let h = Int(color.hue * 0xffff) + 3655
+            let b = Int(color.brightness * 127)
+            let s = 100 + Int(color.saturation * 155)
+            
+            print("light \(light) => h: \(h), s: \(s), b: \(b)")
+            bridge.setHSV(light: light, hue: h, sat: s, bri: b)
+            //
+            //            bridge.setHue(light: light, hue: h)
+            //            bridge.setBrightness(light: light, brightness: b)
+            //            bridge.setSaturation(light: light, saturation: s)
+        }
+        
+        //these lighting layout is hardcoded for my office.
+        //change according to yours
+        fobbleLight(light: 1, color: colors.primary)
+        fobbleLight(light: 2, color: colors.secondary)
+        fobbleLight(light: 3, color: colors.background)
+        fobbleLight(light: 4, color: colors.detail)
+        fobbleLight(light: 5, color: colors.background)
+        fobbleLight(light: 6, color: colors.background)
+    }
+    
+    guard let idx = CommandLine.arguments.firstIndex(of: "--image") else {
+        return
+    }
+    let idx2 = idx.advanced(by: 1)
+    if !CommandLine.arguments.indices.contains(idx2) {
+        return
+    }
+    bridge.turnOn()
+    bridge.setSaturation(saturation: 255)
+    bridge.setBrightness(brightness: 0)
+
+    let fname = CommandLine.arguments[idx2]
+    updateLightsWithFile(fname)
+
+}
 
 //this will generate a shell script so you
 //can restore the current light state later
@@ -358,6 +420,8 @@ func doHelpMode() {
     print("    poor man's ambilight")
     print("  --dump")
     print("    dump script that saves current light state")
+    print("  --image <filename>")
+    print("    sets lights to colors found in given image")
     print("  --help")
     print("    help")
     print("  commands:")
@@ -373,6 +437,7 @@ func doMode(mode: Mode) {
     case .WallpaperContrast: doWallpaperContrastMode()
     case .DumpState: doDumpMode()
     case .Command: doCommandMode()
+    case .ImageFile: doImageFileMode()
     default: doHelpMode()
     }
 }

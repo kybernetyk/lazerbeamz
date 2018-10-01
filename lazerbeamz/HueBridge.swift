@@ -205,19 +205,21 @@ extension Lazerbeamz {
         do {
             let dict = try get(url: url)
             for (key, l) in dict {
-                var light = Light()
-                light.id = Int(key)!
-                light.name = l["name"] as! String
-                light.model = l["modelid"] as! String
-                light.manufacturer = l["manufacturername"] as! String
-                
-                let state = l["state"] as! Dictionary<String, AnyObject>
-                
-                light.state.bri = state["bri"] as! Int
-                light.state.hue = state["hue"] as! Int
-                light.state.sat = state["sat"] as! Int
-                light.state.on = state["on"] as! Bool
-                ret.append(light)
+                guard let ldesc = l as? [String : Any] else {
+                    continue
+                }
+                var light = Lazerbeamz.Light()
+                light.id = Int(key) ?? -1
+                light.name = (ldesc["name"] as? String) ?? "unknown"
+                light.model = (ldesc["modelid"] as? String) ?? "unknown"
+                light.manufacturer = (ldesc["manufacturername"] as? String) ?? "unknown"
+                if let state = ldesc["state"] as? [String : Any] {
+                    light.state.bri = (state["bri"] as? Int) ?? 0
+                    light.state.hue = (state["hue"] as? Int) ?? 0
+                    light.state.sat = (state["sat"] as? Int) ?? 0
+                    light.state.on = (state["on"] as? Bool) ?? false
+                    ret.append(light)
+                }
             }
             
             return ret.sorted(by: {$0.id < $1.id})
@@ -261,7 +263,7 @@ extension Lazerbeamz {
         sem.wait()
     }
     
-    fileprivate static func get(url: String) throws -> Dictionary<String, AnyObject> {
+    fileprivate static func get(url: String) throws -> [String : Any] {
         guard let url = URL(string: url) else {
             throw NetError.UrlFormatError
         }
